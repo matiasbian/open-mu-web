@@ -15,6 +15,17 @@ const registerSchema = z.object({
     message: "Pasword do not match"
 })
 
+export async function OPTIONS() {
+    return new NextResponse(null, {
+        status: 200,
+        headers: {
+            'Access-Control-Allow-Origin': 'https://www.mudinakon.com, https://mudinakon.com',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type, Authorization',
+            'Access-Control-Allow-Credentials': 'true'
+        }
+    });
+}
 
 export async function POST(req: Request) {
     try {
