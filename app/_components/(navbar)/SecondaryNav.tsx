@@ -23,7 +23,7 @@ export default function SecondaryNav() {
         </button>
         <button className="text-3xl p-7 pr-10 text-teal-900 font-bold bg-secondary/[.7] rounded-[70px] border-4 border-white shadow-xl shadow-slate-500 hover:border-teal-600 inline-flex"
           onClick={() => navigate("/register")}>
-          <Image className="mr-1" src={RegisterIcon} alt="downlaod-icons" width={43}/> <span className="ml-1 mt-0.5"> Register</span>
+          <Image className="mr-1" src={RegisterIcon} alt="downlaod-icons" width={43}/> <span className="ml-1 mt-0.5"> Create Account</span>
         </button>
       </div>
       <div className="w-fit absolute right-10 mt-10">
