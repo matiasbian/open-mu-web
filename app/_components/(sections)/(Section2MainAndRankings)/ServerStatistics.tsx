@@ -29,7 +29,7 @@ export default function ServerStatistics() {
   return (
     <div className="w-72 h-52 flex flex-col gap-3 align-middle mx-auto">
       <h2 className='text-2xl font-semibold  text-primary p-3 text-center rounded-lg bg-gradient-to-r
-      from-oceanic via-secondary/[0.5] to-oceanic'>Server Statistics</h2>
+      from-oceanic via-secondary/[0.5] to-oceanic'>Server Info</h2>
       <div className='flex justify-center text-center flex-col'>
         <div className='mt-3'>
           <h2 className='text-primary font-semibold text-xl ml-6 inline-block align-text-bottom'>OpenMUWeb</h2>

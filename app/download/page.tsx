@@ -17,7 +17,7 @@ export default function Download() {
       <div>
         <h2 className="text-2xl text-primary">Client Downloads</h2>
         <hr className="border-t-2 border-slate-300"/>
-        <p className="text-lg text-primary">Downlaod the client for free</p>
+        <p className="text-lg text-primary">Download the client for free</p>
         <div className="flex gap-10 mt-10">
           {(gdLink && gdLink !== "")&& <Link href={process.env.NEXT_PUBLIC_GOODLE_DRIVE_LINK!}><Image src={google} width={180} quality={100} alt={"google_drive"} /></Link>}
           {(mfLink && mfLink !== "") && <Link href={process.env.NEXT_PUBLIC_MEDIAFIRE_LINK!}><Image src={mediafire} width={180} quality={100} alt={"mediafire"}/></Link>}
@@ -27,7 +27,7 @@ export default function Download() {
       <div className="mt-8">
         <h2 className="text-2xl text-primary">Utilities</h2>
         <hr className="border-t-2 border-slate-300"/>
-        <p className="text-lg text-primary">Make sure you downlaod the latest drivers</p>
+        <p className="text-lg text-primary">Make sure you download the latest drivers</p>
         <div className="flex gap-10 mt-10">
           <Link href="https://dotnet.microsoft.com/en-us/download"><Image src={netframework} width={180} quality={100} alt={"dotnet"}/></Link>
           <Link href="https://dotnet.microsoft.com/en-us/download"><Image src={visual} width={180} quality={100} alt={"dotnet"}/></Link>

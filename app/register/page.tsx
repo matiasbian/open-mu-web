@@ -39,19 +39,19 @@ export default function Register() {
 
   return (
     <div className="flex items-center flex-col text-center mx-auto mt-10 w-full">
-        <h2 className="text-2xl font-semibold text-primary mb-8">Registration</h2>
+        <h2 className="text-2xl font-semibold text-primary mb-8">Create Account</h2>
         <form className="w-72">
-            <input type="text" placeholder="username" minLength={4} onChange={(e) => setUsername(e.target.value)} value={username}
+            <input type="text" placeholder="Username" minLength={4} onChange={(e) => setUsername(e.target.value)} value={username}
                 className="border-b-2 p-2 invalid:border-red-500  border-slate-400 outline-none bg-inherit text-lg text-center mb-2 text-primary " />
-            <input type="email" placeholder="email" minLength={8} onChange={(e) => setEmail(e.target.value)} value={email}
+            <input type="email" placeholder="Email" minLength={8} onChange={(e) => setEmail(e.target.value)} value={email}
                 className="mt-6 border-b-2 p-2 invalid:border-red-500  border-slate-400 outline-none bg-inherit text-lg text-center mb-2 text-primary" />
-            <input type="password" placeholder="password" minLength={8} onChange={(e) => setPassword(e.target.value)} value={password}
+            <input type="password" placeholder="Password" minLength={8} onChange={(e) => setPassword(e.target.value)} value={password}
                 className="mt-6 border-b-2 p-2 invalid:border-red-500  border-slate-400 outline-none bg-inherit text-lg text-center mb-2 text-primary" />
-            <input type="password" placeholder="repeat password" minLength={8} onChange={(e) => setRepeatPassword(e.target.value)} value={repeatPassword}
+            <input type="password" placeholder="Repeat Password" minLength={8} onChange={(e) => setRepeatPassword(e.target.value)} value={repeatPassword}
                 className="mt-6 border-b-2 p-2 invalid:border-red-500  border-slate-400 outline-none bg-inherit text-lg text-center mb-8 text-primary" />
             <label htmlFor="terms" className="text-primary inline-block"><input onClick={() => setIsDisabled(!isDisabled)} type="checkbox" id="terms" name="terms" className="w-4 h-4 bg-gray-100 rounded-md focus:ring-blue-400 focus:ring-2"/> Accept 
-            <Link href={"/terms-and-conditions"} className="italic text-primary">Terms and Conditions</Link></label>
-            <button disabled={isDisabled} onClick={onSubmit} className="mt-8 bg-secondary/[0.6] disabled:bg-slate-300/[0.9] hover:bg-secondary/[0.9] p-3 rounded-lg text-primary w-44 mx-auto shadow-xl text-xl" >Register</button>
+            <Link href={"/terms-and-conditions"} className="italic text-primary"> Terms and Conditions</Link></label>
+            <button disabled={isDisabled} onClick={onSubmit} className="mt-8 bg-secondary/[0.6] disabled:bg-slate-300/[0.9] hover:bg-secondary/[0.9] p-3 rounded-lg text-primary w-44 mx-auto shadow-xl text-xl" >Create Account</button>
         </form>
         
     </div>

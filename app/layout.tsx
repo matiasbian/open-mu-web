@@ -17,8 +17,8 @@ const lora = Lora({
 })
 
 export const metadata: Metadata = {
-  title: 'OpenMU Web',
-  description: 'Created by mamflo',
+  title: 'Mu Dinakon Web',
+  description: 'By Deliver Games',
 }
 
 export default function RootLayout({

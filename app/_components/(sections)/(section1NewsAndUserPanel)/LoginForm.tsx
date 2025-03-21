@@ -39,15 +39,15 @@ export default function LoginForm() {
     <>
     <form className="flex flex-col w-72 gap-7 text-primary  text-center">
         <h3 className="text-2xl">Account Login</h3>
-        <input type="text" minLength={4} placeholder="userename" className="pb-2 mt-1 bg-inherit focus:outline-none text-center text-xl placeholder:text-slate-500 placeholder:text-xl
+        <input type="text" minLength={4} placeholder="Username" className="pb-2 mt-1 bg-inherit focus:outline-none text-center text-xl placeholder:text-slate-500 placeholder:text-xl
           border-b-2 border-slate-400 invalid:border-red-500"
           onChange={sUsername} value={username}/>
-        <input type="password" minLength={4} placeholder="password" className="pb-2 bg-inherit focus:outline-none text-center text-xl placeholder:text-slate-500 placeholder:text-xl
+        <input type="password" minLength={4} placeholder="Password" className="pb-2 bg-inherit focus:outline-none text-center text-xl placeholder:text-slate-500 placeholder:text-xl
           border-b-2 border-slate-400 invalid:border-red-500"
          onChange={sPassword} value={password}/>
         <button className="mt-2 bg-secondary/[0.6] hover:bg-secondary/[0.9] p-3 rounded-lg w-44 mx-auto shadow-xl text-xl text-primary"
           onClick={login}>Sign In</button>
-        <p><Link href="/recoverpassword">Lost password?</Link> | <Link href="/register">Register</Link></p>
+        <p><Link href="/recoverpassword">Lost password?</Link> | <Link href="/register">Create Account</Link></p>
     </form>
     </>
   )
