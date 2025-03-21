@@ -6,22 +6,21 @@ export default function Info() {
   return (
     <div className='flex flex-col text-center gap-2 mt-5 px-20 text-primary w-2/3'>
       <Image className='' src={img} alt='img_mu_online' />
-      <h1 className='mt-10 font-bold text-3xl text-primary mb-4'>Server Information</h1>
+      <h1 className='mt-10 font-bold text-3xl text-primary mb-4'>Server specs</h1>
       <p>Season: 6 Episode 3</p>
       <p>
-        <span>Experience:</span>  500x
+        <span>Experience:</span>  20x
       </p>
       <p>
         <span>Drop Rate Excellent:</span> 50%
       </p>
-      <p><span>Drpo Rate Zen:</span> 70%</p>
+      <p><span>Drop Rate Zen:</span> 50%</p>
       <p>
         <span>Party Bonus Exp: </span> 25%, 30%, 50%
       </p>
-      <p><span>Elf Soldier Buff:</span> Up to level 250 and 1 reset.</p>
-      <p><span>Limited Connections:</span> Maximum of 2 accounts on same IP/HWID.</p>
+      <p><span>Elf Soldier Buff:</span> Up to level 250.</p>
       <p>Shops for a low exp server.</p>
-      <p className='whitespace-normal'>Play2Win System: No Web-Shop, no Cash-Shop, only VIP System (without VIP Server) & Web-Credits for Premium Modules.</p>
+      <p className='whitespace-normal'>Monetization System: No Web-Shop, no Cash-Shop, only VIP System (without VIP Server) & Web-Credits for Premium Modules.</p>
       <div className='mt-8'>
           <span className='text-xl font-semibold'>MU Introduction</span> <br />
           <br />
