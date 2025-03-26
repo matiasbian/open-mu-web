@@ -2,27 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-.remove-arrow::-webkit-inner-spin-button, 
-.remove-arrow::-webkit-outer-spin-button { 
-    -webkit-appearance: none; 
-    margin: 0; 
-} 
-
-.remove-arrow { 
-    -moz-appearance: textfield; 
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 10, 10, 14;
+  --background-end-rgb: 10, 10, 14;
 }
 
 body {
-    cursor: url('~/public/img/cursor/Cursor.png'), auto;
-}
-button:hover, .news-body:hover{
-    cursor: url('~/public/img/cursor/CursorGet.png'), auto;
-}
-a:hover{
-    cursor: url('~/public/img/cursor/CursorGet.png'), auto;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  font-family: "Cinzel", serif;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Cinzel", serif;
+}
 
-p {
-    white-space: pre;
-} 
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
