@@ -41,7 +41,7 @@ export default function TopPlayers() {
         {characters.map((c, i) => (
           <tr key={c.Name} className="border-b-2 border-slate-300">
             <td className='text-start text-slate-700 font-bold pb-3.5 pl-3 pt-3'>{i+1}</td>
-            <td className='text-start font-normal text-primary pb-3.5 pt-3'><Image className="inline-block mr-2 rounded-lg shadow-lg shadow-black" src={(getImage(c.CharacterClassId) as StaticImport)} width={35} alt="character_avatar"/> {c.Name}</td>
+            <td className='text-start font-normal text-primary pb-3.5 pt-3'><Image className="inline-block mr-2 rounded-lg shadow-lg shadow-black" src={(getImage(c.CharacterClassId) as StaticImport)} width={35} alt="character_avatar"/> {c.name}</td>
             <td className='pb-3.5 font-normal text-center text-primary text-lg pt-3'>{c.lvl}</td>
             <td className='pb-3.5 font-normal text-center text-primary text-lg pt-3'>{c.masterlvl}</td>
             <td className='pb-3.5 font-normal text-primary text-center pt-3'>{c.resets}</td>

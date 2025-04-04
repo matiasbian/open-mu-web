@@ -25,7 +25,10 @@ const nextConfig = {
         ],
       },
     ]
-  }
+  },
+  images: {
+    domains: ['media.discordapp.net'],
+  },
 }
 
 module.exports = nextConfig

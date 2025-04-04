@@ -48,7 +48,7 @@ export default function TopGuilds() {
         </thead>
         <tbody>
           {guilds.map((g, i) => (
-            <tr key={g.Name} className="border-b-2 border-slate-300" onMouseEnter={(event) => handleMouseEnter(i, event)} onMouseLeave={() => setCurrentShowingGuild(-1)} >
+            <tr key={i} className="border-b-2 border-slate-300" onMouseEnter={(event) => handleMouseEnter(i, event)} onMouseLeave={() => setCurrentShowingGuild(-1)} >
               <th className=' text-slate-700 text-lg font-semibold pb-1.5 text-start pl-5 pt-3'>{i+1}</th>
               <th className=' text-primary text-lg pb-1.5 pt-3' >{g.Name}</th>
               <th className=' text-primary text-lg  pb-1.5 pt-3'>{g.Score} {currentShowingGuild === i && <GuildPopUp guildName={g.Name} style={{left: mousePosition.x, top: mousePosition.y}}/>}</th>
