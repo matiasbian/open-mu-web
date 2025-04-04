@@ -237,6 +237,7 @@ type TranslationStrings = {
     confirmResetStats: string
     passwordChangeSuccess: string
     ok: string
+    loading: string
   }
   vips: {
     title: string
@@ -543,6 +544,23 @@ type TranslationStrings = {
       }
     }
   }
+  login: {
+    title: string
+    username: string
+    password: string
+    rememberMe: string
+    forgotPassword: string
+    loginButton: string
+    loggingIn: string
+    noAccount: string
+    register: string
+    errors: {
+      usernameRequired: string
+      passwordRequired: string
+      invalidCredentials: string
+      serverError: string
+    }
+  }
 }
 
 const translations: Translations = {
@@ -774,6 +792,7 @@ const translations: Translations = {
       confirmResetStats: "Confirmar Resetear Stats",
       passwordChangeSuccess: "Contraseña cambiada con éxito",
       ok: "Aceptar",
+      loading: "Cargando...",
     },
     vips: {
       title: "VIP",
@@ -1080,6 +1099,23 @@ const translations: Translations = {
         },
       },
     },
+    login: {
+      title: "Iniciar Sesión",
+      username: "Nombre de usuario",
+      password: "Contraseña",
+      rememberMe: "Recordarme",
+      forgotPassword: "¿Olvidaste tu contraseña?",
+      loginButton: "Iniciar Sesión",
+      loggingIn: "Iniciando sesión...",
+      noAccount: "¿No tienes una cuenta?",
+      register: "Regístrate",
+      errors: {
+        usernameRequired: "El nombre de usuario es obligatorio",
+        passwordRequired: "La contraseña es obligatoria",
+        invalidCredentials: "Nombre de usuario o contraseña incorrectos",
+        serverError: "Error del servidor, inténtalo de nuevo más tarde",
+      },
+    },
   },
   en: {
     nav: {
@@ -1309,6 +1345,7 @@ const translations: Translations = {
       confirmResetStats: "Confirm Reset Stats",
       passwordChangeSuccess: "Password changed successfully",
       ok: "Ok",
+      loading: "Loading...",
     },
     vips: {
       title: "VIP",
@@ -1613,6 +1650,23 @@ const translations: Translations = {
           title: "Cryptocurrencies",
           description: "Pay with cryptocurrencies.",
         },
+      },
+    },
+    login: {
+      title: "Login",
+      username: "Username",
+      password: "Password",
+      rememberMe: "Remember me",
+      forgotPassword: "Forgot password?",
+      loginButton: "Login",
+      loggingIn: "Logging in...",
+      noAccount: "Don't have an account?",
+      register: "Register",
+      errors: {
+        usernameRequired: "Username is required",
+        passwordRequired: "Password is required",
+        invalidCredentials: "Invalid username or password",
+        serverError: "Server error, please try again later",
       },
     },
   },

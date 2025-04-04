@@ -50,11 +50,11 @@ export default function Header() {
         </div>
         <div className="flex items-center space-x-2">
           <Link
-            href="/cuenta"
+            href="/logincheck"
             className="bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] px-6 py-2 rounded-md border border-[#A67C52] shadow-md hover:from-[#9B6A3B] hover:to-[#7B5433] mr-2"
           >
             <div className="text-center">
-              <p className="text-white uppercase font-bold">{t.nav.login}</p>
+              <p className="text-white uppercase font-bold">{t.nav.account}</p>
             </div>
           </Link>
           <LanguageSelector />

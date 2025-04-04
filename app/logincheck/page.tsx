@@ -1,8 +1,6 @@
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import Banners from "./Banners"
-import LoginForm from "./LoginForm"
-import UserPanel from "./UserPanel";
+import { redirect } from 'next/navigation'
 
 export default async function Section1() {
 
@@ -10,14 +8,18 @@ export default async function Section1() {
   const session = await getServerSession(authOptions);
   const isLogged = session?.user != undefined;
 
+  if (isLogged)
+  {
+    redirect('/cuenta')
+  }
+  else
+  {
+    redirect('/login')
+  }
+
 
   return (
     <div className="w-full h-[400px] flex mb-10 justify-between">
-        <Banners />
-        <div className="w-1/3 h-[90%] flex items-center justify-center">
-          {!isLogged && <LoginForm />}
-          {isLogged && <UserPanel role={session.user.role}/>}
-        </div>
         
     </div>
   )
