@@ -5,6 +5,16 @@ import { useLanguage } from "@/contexts/language-context"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { Trophy, Award, Crown, Swords, Shield, Users, Star } from "lucide-react"
+import { useEffect } from "react";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { Guild } from "@prisma/client";
+import { CharacterRanking } from "@/app/_models/character";
+import Image from "next/image"
+import { getImage } from "@/app/_utils/characterAvatarReturn";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { Character } from "@prisma/client";
+import { CharacterOnline } from "@/app/_models/characterOnline"
 
 type RankingItem = {
   position: number
@@ -20,125 +30,79 @@ type RankingItem = {
 function RankingsContent() {
   const { t } = useLanguage()
 
-  // Sample data for different ranking categories
-  const playerRankings: RankingItem[] = [
-    { position: 1, name: "LouisMG", class: "BK", level: 400, reset: 1998, guild: "Warriors", ranking: "master" },
-    {
-      position: 2,
-      name: "LouisMK",
-      class: "BK",
-      level: 400,
-      reset: 1998,
-      guild: "Warriors",
-      ranking: "master",
-      highlight: true,
-    },
-    { position: 3, name: "DarkLord", class: "DL", level: 400, reset: 1997, guild: "Immortals", ranking: "expert" },
-    { position: 4, name: "ShadowELF", class: "ELF", level: 400, reset: 1996, guild: "Hunters", ranking: "expert" },
-    { position: 5, name: "MagicWiz", class: "MG", level: 400, reset: 1995, guild: "Wizards", ranking: "expert" },
-    { position: 6, name: "DarkKnight", class: "BK", level: 400, reset: 1994, guild: "Warriors", ranking: "expert" },
-    {
-      position: 7,
-      name: "ArcherQueen",
-      class: "ELF",
-      level: 400,
-      reset: 1993,
-      guild: "Hunters",
-      ranking: "apprentice",
-    },
-    {
-      position: 8,
-      name: "SummonerPro",
-      class: "SUM",
-      level: 400,
-      reset: 1992,
-      guild: "Wizards",
-      ranking: "apprentice",
-    },
-    {
-      position: 9,
-      name: "LordMaster",
-      class: "DL",
-      level: 400,
-      reset: 1991,
-      guild: "Immortals",
-      ranking: "apprentice",
-    },
-    { position: 10, name: "MagicMaster", class: "MG", level: 400, reset: 1990, guild: "Wizards", ranking: "novice" },
-  ]
+  const [onlineCharacters, setOnlineCharacters] = useState<CharacterOnline[]>([])
+  
+      //call the online player api to see how many players there are on
+      useEffect(() => {
+          const fetchData = async () => {
+            try {
+              const status = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/status`);
+              if(status.ok){
+                const serverStatus =  await status.json();
+                const result = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/characters/ranking/online`, {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(serverStatus)
+                })
+                const final = await result.json();
+                setOnlineCharacters(final)
+              } else {
+                toast.error("There was a problem trying to find the online users. Try again later.")
+              }    
+            } catch (e) {
+              toast.error("There was a problem! Try again later")
+            }
+          }
+          fetchData()
+      },[])
 
-  const resetRankings: RankingItem[] = [
-    { position: 1, name: "ResetKing", class: "MG", level: 400, reset: 78, guild: "Wizards", ranking: "master" },
-    { position: 2, name: "ResetQueen", class: "BK", level: 400, reset: 75, guild: "Warriors", ranking: "master" },
-    { position: 3, name: "ResetPro", class: "SUM", level: 400, reset: 72, guild: "Wizards", ranking: "expert" },
-    {
-      position: 4,
-      name: "ResetMaster",
-      class: "DL",
-      level: 400,
-      reset: 70,
-      guild: "Immortals",
-      ranking: "expert",
-      highlight: true,
-    },
-    { position: 5, name: "ResetLord", class: "DL", level: 400, reset: 68, guild: "Immortals", ranking: "expert" },
-    { position: 6, name: "ResetWizard", class: "MG", level: 400, reset: 65, guild: "Wizards", ranking: "expert" },
-    { position: 7, name: "ResetArcher", class: "ELF", level: 400, reset: 62, guild: "Hunters", ranking: "apprentice" },
-    { position: 8, name: "ResetKnight", class: "BK", level: 400, reset: 60, guild: "Warriors", ranking: "apprentice" },
-    {
-      position: 9,
-      name: "ResetSummoner",
-      class: "SUM",
-      level: 400,
-      reset: 58,
-      guild: "Wizards",
-      ranking: "apprentice",
-    },
-    { position: 10, name: "ResetElf", class: "ELF", level: 400, reset: 55, guild: "Hunters", ranking: "novice" },
-  ]
+  const [characters, setCharacters]= useState<CharacterRanking[]>([])
+  //cals the top players api
+  useEffect(() => {
+    async function fetchData() {
+      try{
+        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/characters/ranking/reset`);
+        const res = await response.json();
+        setCharacters(res);
+      }catch (e) {
+        toast.error("There was a problem! Try again later")
+      }
+    }
+    fetchData();
+  }, [])
 
-  const pvpRankings: RankingItem[] = [
-    { position: 1, name: "PvPKing", class: "DL", level: 400, reset: 1998, guild: "Immortals", ranking: "master" },
-    { position: 2, name: "PvPQueen", class: "ELF", level: 400, reset: 1997, guild: "Hunters", ranking: "master" },
-    {
-      position: 3,
-      name: "PvPMaster",
-      class: "BK",
-      level: 400,
-      reset: 1996,
-      guild: "Warriors",
-      ranking: "expert",
-      highlight: true,
-    },
-    { position: 4, name: "PvPWizard", class: "MG", level: 400, reset: 1995, guild: "Wizards", ranking: "expert" },
-    { position: 5, name: "PvPLord", class: "DL", level: 400, reset: 1994, guild: "Immortals", ranking: "expert" },
-    { position: 6, name: "PvPArcher", class: "ELF", level: 400, reset: 1993, guild: "Hunters", ranking: "expert" },
-    { position: 7, name: "PvPKnight", class: "BK", level: 400, reset: 1992, guild: "Warriors", ranking: "apprentice" },
-    {
-      position: 8,
-      name: "PvPSummoner",
-      class: "SUM",
-      level: 400,
-      reset: 1991,
-      guild: "Wizards",
-      ranking: "apprentice",
-    },
-    { position: 9, name: "PvPElf", class: "ELF", level: 400, reset: 1990, guild: "Hunters", ranking: "apprentice" },
-    { position: 10, name: "PvPMage", class: "MG", level: 400, reset: 1989, guild: "Wizards", ranking: "novice" },
-  ]
+   const [killers, setKillers] = useState<Character[]>([])
+  
+    //calls the top killers api
+    useEffect(() => {
+      async function fetchData() {
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/characters/ranking/killers`);
+          const res = await response.json();
+          setKillers(res);
+        } catch (e) {
+          toast.error("There was a problem! Try again later")
+        }
+      }
+      fetchData();
+    }, [])
 
-  const guildRankings = [
-    { position: 1, name: "Immortals", members: 30, score: 15000, leader: "LordMaster", ranking: "master" },
-    { position: 2, name: "Warriors", members: 28, score: 14500, leader: "LouisMG", ranking: "master", highlight: true },
-    { position: 3, name: "Wizards", members: 25, score: 14000, leader: "MagicMaster", ranking: "expert" },
-    { position: 4, name: "Hunters", members: 22, score: 13500, leader: "ArcherQueen", ranking: "expert" },
-    { position: 5, name: "Assassins", members: 20, score: 13000, leader: "ShadowBlade", ranking: "expert" },
-    { position: 6, name: "Guardians", members: 18, score: 12500, leader: "ShieldBearer", ranking: "apprentice" },
-    { position: 7, name: "Crusaders", members: 15, score: 12000, leader: "HolyCrusader", ranking: "apprentice" },
-    { position: 8, name: "Avengers", members: 12, score: 11500, leader: "Avenger", ranking: "novice" },
-    { position: 9, name: "Defenders", members: 10, score: 11000, leader: "Defender", ranking: "novice" },
-    { position: 10, name: "Protectors", members: 8, score: 10500, leader: "Protector", ranking: "novice" },
-  ]
+  const [guilds, setGuilds] = useState<Guild[]>([])
+  //calls the tp guild api
+    useEffect(() => {
+      async function fetchData() {
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/guilds`);
+          const res = await response.json();
+          setGuilds(res);
+        } catch (e) {
+          toast.error("There was a problem! Try again later")
+        }
+      }
+      fetchData();
+    }, []) 
 
   const rankingColors = {
     novice: "text-green-400",
@@ -214,21 +178,20 @@ function RankingsContent() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#333]">
-                {playerRankings.map((item) => (
-                  <tr key={`player-${item.position}`} className={item.highlight ? "bg-[#1a1a24]/50" : ""}>
-                    <td className="py-3 px-2 font-semibold">{item.position}</td>
-                    <td className={`py-3 px-2 ${item.highlight ? "text-yellow-400 font-semibold" : ""}`}>
-                      {item.name}
+                {onlineCharacters.map((item, i) => (
+                  <tr key={`player-${i}`} className={i < 4 ? "bg-[#1a1a24]/50" : ""}>
+                    <td className="py-3 px-2 font-semibold">{i + 1}</td>
+                    <td className={`py-3 px-2 ${i < 4 ? "text-yellow-400 font-semibold" : ""}`}>
+                      {item.Name}
                     </td>
                     <td className="py-3 px-2 flex items-center">
-                      {classIcons[item.class as keyof typeof classIcons]}
-                      <span className="ml-1">{item.class}</span>
+                    <Image className="inline-block mr-2 rounded-lg shadow-lg shadow-black" src={(getImage(item.CharacterClassId) as StaticImport)} width={35} alt="character_avatar"/>
                     </td>
-                    <td className="py-3 px-2">{item.level}</td>
-                    <td className="py-3 px-2 text-yellow-400">{item.reset}</td>
-                    <td className="py-3 px-2">{item.guild}</td>
-                    <td className={`py-3 px-2 ${rankingColors[item.ranking]}`}>
-                      {t.rankingsPage.rankings[item.ranking]}
+                    <td className="py-3 px-2">{"item.level"}</td>
+                    <td className="py-3 px-2 text-yellow-400">{"item.reset"}</td>
+                    <td className="py-3 px-2">{"item.guild"}</td>
+                    <td className={`py-3 px-2 $"{rankingColors[item.ranking]"}`}>
+                      {"t.rankingsPage.rankings[item.ranking]"}
                     </td>
                   </tr>
                 ))}
@@ -257,21 +220,20 @@ function RankingsContent() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#333]">
-                {resetRankings.map((item) => (
-                  <tr key={`reset-${item.position}`} className={item.highlight ? "bg-[#1a1a24]/50" : ""}>
-                    <td className="py-3 px-2 font-semibold">{item.position}</td>
-                    <td className={`py-3 px-2 ${item.highlight ? "text-yellow-400 font-semibold" : ""}`}>
-                      {item.name}
+                {characters.map((item, i) => (
+                  <tr key={`reset-${i}`} className={i <4 ? "bg-[#1a1a24]/50" : ""}>
+                    <td className="py-3 px-2 font-semibold">{i +1}</td>
+                    <td className={`py-3 px-2 ${i < 4 ? "text-yellow-400 font-semibold" : ""}`}>
+                      {item.Name}
                     </td>
                     <td className="py-3 px-2 flex items-center">
-                      {classIcons[item.class as keyof typeof classIcons]}
-                      <span className="ml-1">{item.class}</span>
+                    <Image className="inline-block mr-2 rounded-lg shadow-lg shadow-black" src={(getImage(item.CharacterClassId) as StaticImport)} width={35} alt="character_avatar"/>
                     </td>
-                    <td className="py-3 px-2">{item.level}</td>
-                    <td className="py-3 px-2 text-yellow-400">{item.reset}</td>
-                    <td className="py-3 px-2">{item.guild}</td>
-                    <td className={`py-3 px-2 ${rankingColors[item.ranking]}`}>
-                      {t.rankingsPage.rankings[item.ranking]}
+                    <td className="py-3 px-2">{item.lvl}</td>
+                    <td className="py-3 px-2 text-yellow-400">{item.resets}</td>
+                    <td className="py-3 px-2">{"item.guild"}</td>
+                    <td className={`py-3 px-2 ${"rankingColors[item.ranking]"}`}>
+                      {"t.rankingsPage.rankings[item.ranking]"}
                     </td>
                   </tr>
                 ))}
@@ -300,21 +262,20 @@ function RankingsContent() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#333]">
-                {pvpRankings.map((item) => (
-                  <tr key={`pvp-${item.position}`} className={item.highlight ? "bg-[#1a1a24]/50" : ""}>
-                    <td className="py-3 px-2 font-semibold">{item.position}</td>
-                    <td className={`py-3 px-2 ${item.highlight ? "text-yellow-400 font-semibold" : ""}`}>
-                      {item.name}
+                {killers.map((item, i) => (
+                  <tr key={`pvp-${i}`} className={i < 4 ? "bg-[#1a1a24]/50" : ""}>
+                    <td className="py-3 px-2 font-semibold">{i + 1}</td>
+                    <td className={`py-3 px-2 ${i < 4 ? "text-yellow-400 font-semibold" : ""}`}>
+                      {item.Name}
                     </td>
                     <td className="py-3 px-2 flex items-center">
-                      {classIcons[item.class as keyof typeof classIcons]}
-                      <span className="ml-1">{item.class}</span>
+                    <Image className="inline-block mr-2 rounded-lg shadow-lg shadow-black" src={(getImage(item.CharacterClassId) as StaticImport)} width={35} alt="character_avatar"/>
                     </td>
-                    <td className="py-3 px-2">{item.level}</td>
-                    <td className="py-3 px-2 text-yellow-400">{item.reset}</td>
-                    <td className="py-3 px-2">{item.guild}</td>
-                    <td className={`py-3 px-2 ${rankingColors[item.ranking]}`}>
-                      {t.rankingsPage.rankings[item.ranking]}
+                    <td className="py-3 px-2">{"item.Id"}</td>
+                    <td className="py-3 px-2 text-yellow-400">{"item.reset"}</td>
+                    <td className="py-3 px-2">{"item.guild"}</td>
+                    <td className={`py-3 px-2 ${"rankingColors[item.ranking]"}`}>
+                      {"t.rankingsPage.rankings[item.ranking]"}
                     </td>
                   </tr>
                 ))}
@@ -342,17 +303,17 @@ function RankingsContent() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#333]">
-                {guildRankings.map((item) => (
-                  <tr key={`guild-${item.position}`} className={item.highlight ? "bg-[#1a1a24]/50" : ""}>
-                    <td className="py-3 px-2 font-semibold">{item.position}</td>
-                    <td className={`py-3 px-2 ${item.highlight ? "text-yellow-400 font-semibold" : ""}`}>
-                      {item.name}
+                {guilds.map((item, i) => (
+                  <tr key={`guild-${i}`} className={i < 4 ? "bg-[#1a1a24]/50" : ""}>
+                    <td className="py-3 px-2 font-semibold">{i + 1}</td>
+                    <td className={`py-3 px-2 ${i < 4 ? "text-yellow-400 font-semibold" : ""}`}>
+                      {item.Name}
                     </td>
-                    <td className="py-3 px-2">{item.members}</td>
-                    <td className="py-3 px-2 text-yellow-400">{item.score}</td>
-                    <td className="py-3 px-2">{item.leader}</td>
-                    <td className={`py-3 px-2 ${rankingColors[item.ranking as keyof typeof rankingColors]}`}>
-                      {t.rankingsPage.rankings[item.ranking as keyof typeof t.rankingsPage.rankings]}
+                    <td className="py-3 px-2">{"item.members"}</td>
+                    <td className="py-3 px-2 text-yellow-400">{item.Score}</td>
+                    <td className="py-3 px-2">{"item.leader"}</td>
+                    <td className={`py-3 px-2 ${"rankingColors[item.ranking as keyof typeof rankingColors]"}`}>
+                      {"t.rankingsPage.rankings[item.ranking as keyof typeof t.rankingsPage.rankings]"}
                     </td>
                   </tr>
                 ))}
