@@ -16,7 +16,7 @@ export default function Header() {
           <Link href="/" className="text-white hover:text-yellow-400 uppercase font-semibold">
             {t.nav.home}
           </Link>
-          <Link href="/registro" className="text-white hover:text-yellow-400 uppercase font-semibold">
+          <Link href="/register" className="text-white hover:text-yellow-400 uppercase font-semibold">
             {t.nav.register}
           </Link>
           <Link href="/rankings" className="text-white hover:text-yellow-400 uppercase font-semibold">

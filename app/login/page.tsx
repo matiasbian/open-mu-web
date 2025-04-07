@@ -153,7 +153,7 @@ function LoginForm() {
               <div className="text-center mt-4">
                 <p className="text-sm text-gray-400">
                   {t.login.noAccount}{" "}
-                  <Link href="/registro" className="text-yellow-400 hover:underline">
+                  <Link href="/register" className="text-yellow-400 hover:underline">
                     {t.login.register}
                   </Link>
                 </p>
