@@ -30,16 +30,16 @@ function InfosContent() {
             <div className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-gray-300">{t.infosPage.version}</div>
-                <div className="text-yellow-400">1046 + Season VI</div>
+                <div className="text-yellow-400">Season VI</div>
 
                 <div className="text-gray-300">{t.infosPage.experience}</div>
-                <div className="text-yellow-400">200 ~ 500x</div>
+                <div className="text-yellow-400">20x</div>
 
                 <div className="text-gray-300">{t.infosPage.drop}</div>
                 <div className="text-yellow-400">30% ~ 50%</div>
 
                 <div className="text-gray-300">{t.infosPage.zen}</div>
-                <div className="text-yellow-400">100x</div>
+                <div className="text-yellow-400">20x</div>
 
                 <div className="text-gray-300">{t.infosPage.maxStats}</div>
                 <div className="text-yellow-400">65000</div>

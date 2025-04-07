@@ -21,7 +21,7 @@ function DownloadsContent() {
             <p className="text-gray-400 max-w-2xl mx-auto">{t.downloads.subtitle}</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
+          <div className="grid md:grid-cols-1 gap-6 mb-12">
             {/* Full Client */}
             <div className="bg-[#0c0c14]/80 border border-[#333] rounded-lg overflow-hidden">
               <div className="border-b border-[#333] p-4">
@@ -35,7 +35,7 @@ function DownloadsContent() {
 
                 <div className="space-y-4">
                   <a
-                    href="https://www.mediafire.com/file/your-client-link"
+                    href="https://www.mediafire.com/file/gfmzsokrz5v1cgk/MuDinakonClient.zip/file"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-between bg-[#1a1a24] hover:bg-[#252535] border border-[#333] rounded-md p-4 transition-colors"
@@ -53,7 +53,7 @@ function DownloadsContent() {
                   </a>
 
                   <a
-                    href="https://drive.google.com/file/your-client-link"
+                    href="https://drive.google.com/file/d/1hAOWz7UrKvSQhD9g92YESFJRvWlEFqgS/view?usp=drive_link"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-between bg-[#1a1a24] hover:bg-[#252535] border border-[#333] rounded-md p-4 transition-colors"
@@ -63,57 +63,6 @@ function DownloadsContent() {
                       <div>
                         <div className="font-medium">Google Drive</div>
                         <div className="text-xs text-gray-400">{t.downloads.size}: 2.5 GB</div>
-                      </div>
-                    </div>
-                    <div className="bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] px-4 py-2 rounded text-white text-sm font-semibold uppercase border border-[#A67C52] shadow-md hover:from-[#9B6A3B] hover:to-[#7B5433]">
-                      {t.downloads.download}
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* Patch */}
-            <div className="bg-[#0c0c14]/80 border border-[#333] rounded-lg overflow-hidden">
-              <div className="border-b border-[#333] p-4">
-                <h2 className="text-xl uppercase font-semibold tracking-wider flex items-center">
-                  <HardDrive className="h-5 w-5 text-yellow-400 mr-2" />
-                  {t.downloads.patch}
-                </h2>
-              </div>
-              <div className="p-6">
-                <p className="text-gray-400 mb-6">{t.downloads.patchDesc}</p>
-
-                <div className="space-y-4">
-                  <a
-                    href="https://www.mediafire.com/file/your-patch-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between bg-[#1a1a24] hover:bg-[#252535] border border-[#333] rounded-md p-4 transition-colors"
-                  >
-                    <div className="flex items-center">
-                      <FileDown className="h-5 w-5 text-red-500 mr-3" />
-                      <div>
-                        <div className="font-medium">MediaFire</div>
-                        <div className="text-xs text-gray-400">{t.downloads.size}: 500 MB</div>
-                      </div>
-                    </div>
-                    <div className="bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] px-4 py-2 rounded text-white text-sm font-semibold uppercase border border-[#A67C52] shadow-md hover:from-[#9B6A3B] hover:to-[#7B5433]">
-                      {t.downloads.download}
-                    </div>
-                  </a>
-
-                  <a
-                    href="https://drive.google.com/file/your-patch-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between bg-[#1a1a24] hover:bg-[#252535] border border-[#333] rounded-md p-4 transition-colors"
-                  >
-                    <div className="flex items-center">
-                      <FileDown className="h-5 w-5 text-blue-500 mr-3" />
-                      <div>
-                        <div className="font-medium">Google Drive</div>
-                        <div className="text-xs text-gray-400">{t.downloads.size}: 500 MB</div>
                       </div>
                     </div>
                     <div className="bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] px-4 py-2 rounded text-white text-sm font-semibold uppercase border border-[#A67C52] shadow-md hover:from-[#9B6A3B] hover:to-[#7B5433]">

@@ -12,7 +12,7 @@ function SocialContent() {
   const socialLinks = [
     {
       name: "Discord",
-      url: "https://discord.gg/mudinakon",
+      url: "https://discord.gg/wkrzPuQwCp",
       icon: <MessageCircle className="h-8 w-8" />,
       color: "from-indigo-600 to-indigo-800",
       borderColor: "border-indigo-500",
@@ -116,7 +116,7 @@ function SocialContent() {
                 </li>
               </ul>
               <a
-                href="https://discord.gg/mudinakon"
+                href="https://discord.gg/wkrzPuQwCp"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold py-3 px-6 rounded-md transition-colors"
