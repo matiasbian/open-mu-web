@@ -114,7 +114,8 @@ type TranslationStrings = {
     subtitle: string
     topPlayers: string
     topResets: string
-    topPvP: string
+    topPvP: string,
+    killCount: string,
     topGuilds: string
     name: string
     class: string
@@ -125,7 +126,7 @@ type TranslationStrings = {
     guildName: string
     members: string
     score: string
-    leader: string
+    leader: string,
     rankings: {
       novice: string
       apprentice: string
@@ -670,6 +671,7 @@ const translations: Translations = {
       topPlayers: "Top Jugadores",
       topResets: "Top Resets",
       topPvP: "Top PvP",
+      killCount: "PK Count",
       topGuilds: "Top Gremios",
       name: "Nombre",
       class: "Clase",
@@ -1223,6 +1225,7 @@ const translations: Translations = {
       topPlayers: "Top Players",
       topResets: "Top Resets",
       topPvP: "Top PvP",
+      killCount: "PK Totales",
       topGuilds: "Top Guilds",
       name: "Name",
       class: "Class",

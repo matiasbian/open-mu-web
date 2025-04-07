@@ -219,9 +219,8 @@ function RankingsContent() {
                 <th className="py-3 px-2 text-left">{t.rankingsPage.name}</th>
                 <th className="py-3 px-2 text-left">{t.rankingsPage.class}</th>
                 <th className="py-3 px-2 text-left">{t.rankingsPage.level}</th>
-                <th className="py-3 px-2 text-left">MR</th>
+                <th className="py-3 px-2 text-left">{t.rankings.resets}</th>
                 <th className="py-3 px-2 text-left">{t.rankingsPage.guild}</th>
-                <th className="py-3 px-2 text-left">{t.rankingsPage.ranking}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#333]">
@@ -236,10 +235,7 @@ function RankingsContent() {
                   </td>
                   <td className="py-3 px-2">{item.lvl}</td>
                   <td className="py-3 px-2 text-yellow-400">{item.resets}</td>
-                  <td className="py-3 px-2">{item.guildName}</td>
-                  <td className={`py-3 px-2 ${"rankingColors[item.ranking]"}`}>
-                    {"t.rankingsPage.rankings[item.ranking]"}
-                  </td>
+                  <td className="py-3 px-2">{item.guildname}</td>
                 </tr>
               ))}
             </tbody>
@@ -262,10 +258,7 @@ function RankingsContent() {
                 <th className="py-3 px-2 text-left">#</th>
                 <th className="py-3 px-2 text-left">{t.rankingsPage.name}</th>
                 <th className="py-3 px-2 text-left">{t.rankingsPage.class}</th>
-                <th className="py-3 px-2 text-left">{t.rankingsPage.level}</th>
-                <th className="py-3 px-2 text-left">{t.rankingsPage.reset}</th>
-                <th className="py-3 px-2 text-left">{t.rankingsPage.guild}</th>
-                <th className="py-3 px-2 text-left">{t.rankingsPage.ranking}</th>
+                <th className="py-3 px-2 text-left">{t.rankingsPage.killCount}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#333]">
@@ -278,12 +271,7 @@ function RankingsContent() {
                   <td className="py-3 px-2 flex items-center">
                   <Image className="inline-block mr-2 rounded-lg shadow-lg shadow-black" src={(getImage(item.CharacterClassId) as StaticImport)} width={35} alt="character_avatar"/>
                   </td>
-                  <td className="py-3 px-2">{"item.Id"}</td>
-                  <td className="py-3 px-2 text-yellow-400">{"item.reset"}</td>
-                  <td className="py-3 px-2">{"item.guild"}</td>
-                  <td className={`py-3 px-2 ${"rankingColors[item.ranking]"}`}>
-                    {"t.rankingsPage.rankings[item.ranking]"}
-                  </td>
+                  <td className={`py-3 px-2 ${"rankingColors[item.ranking]"}`}>{item.PlayerKillCount}</td>
                 </tr>
               ))}
             </tbody>
@@ -308,7 +296,6 @@ function RankingsContent() {
                 <th className="py-3 px-2 text-left">{t.rankingsPage.members}</th>
                 <th className="py-3 px-2 text-left">{t.rankingsPage.score}</th>
                 <th className="py-3 px-2 text-left">{t.rankingsPage.leader}</th>
-                <th className="py-3 px-2 text-left">{t.rankingsPage.ranking}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#333]">
@@ -320,10 +307,7 @@ function RankingsContent() {
                   </td>
                   <td className="py-3 px-2">{"item.members"}</td>
                   <td className="py-3 px-2 text-yellow-400">{item.Score}</td>
-                  <td className="py-3 px-2">{"item.leader"}</td>
-                  <td className={`py-3 px-2 ${"rankingColors[item.ranking as keyof typeof rankingColors]"}`}>
-                    {"t.rankingsPage.rankings[item.ranking as keyof typeof t.rankingsPage.rankings]"}
-                  </td>
+                  <td className="py-3 px-2">{item.Leader}</td>
                 </tr>
               ))}
             </tbody>

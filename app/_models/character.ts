@@ -31,6 +31,6 @@ export interface CharacterRanking {
     resets: number,
     lvl: number,
     masterlvl: number,
-    guildName: string,
+    guildname: string,
     guildStatus: number
 }
