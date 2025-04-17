@@ -12,6 +12,7 @@ import { CharacterEdit } from "../_models/characterEdit";
 import { getImage } from '@/app/_utils/characterAvatarReturn';
 import  Image  from "next/image"
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { toast } from "react-toastify";
 
 // Mock data for demonstration
 type Character = {
@@ -26,10 +27,10 @@ type Character = {
   vitality?: number
   energy?: number
   isPK?: boolean
+  vaultid?: string
 }
 
 function AccountContent({characters}: CharacterEdit[]) {
-    console.log(characters)
   const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState<"characters" | "settings">("characters")
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null)
@@ -38,6 +39,7 @@ function AccountContent({characters}: CharacterEdit[]) {
   const [showPKClearModal, setShowPKClearModal] = useState(false)
   const [showResetStatsModal, setShowResetStatsModal] = useState(false)
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
+  const [resetMessage, setResetMessage] = useState("")
 
   // Mock user data
   const userData = {
@@ -70,6 +72,7 @@ function AccountContent({characters}: CharacterEdit[]) {
   }
 
   const handleResetStats = (character: Character) => {
+    console.log(character)
     setSelectedCharacter(character)
     setShowResetStatsModal(true)
   }
@@ -77,6 +80,41 @@ function AccountContent({characters}: CharacterEdit[]) {
   const handleChangePassword = () => {
     setShowChangePasswordModal(true)
   }
+
+
+  //request reset stats of character
+    const resetStats = async function (name: string, clasId: string, charID: string) {
+      try 
+      {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/characters/resetStats`, {
+          method: 'POST',
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+              name,
+              clasId,
+              charID  
+          })
+        })
+        const body = await response.json();
+        if(response.ok){
+            toast.success(body.message);
+            console.log('reset success')
+            setShowResetStatsModal(false)
+            router.refresh();
+        } else {
+          setResetMessage(body.message)
+            toast.error(body.message);
+        }
+      } 
+      catch(e)
+      {
+        console.log('aaaa', e)
+      }   
+      
+      setShowResetStatsModal(false)
+    }
 
   const router = useRouter()
 
@@ -419,7 +457,11 @@ function AccountContent({characters}: CharacterEdit[]) {
                   <li>{t.account.itemsLost}</li>
                 </ul>
               </div>
-
+              {resetMessage && <p
+              className={`w-full px-3 py-2 mb-4 bg-[#1a1a24] border ${
+                "border-red-500"
+              } rounded-md text-white focus:outline-none focus:ring-1 focus:ring-yellow-500`}
+              >{resetMessage}</p>}
               <div className="flex justify-end space-x-3">
                 <button
                   onClick={() => setShowResetConfirmModal(false)}
@@ -427,7 +469,9 @@ function AccountContent({characters}: CharacterEdit[]) {
                 >
                   {t.account.cancel}
                 </button>
-                <button className="px-4 py-2 bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] rounded-md border border-[#A67C52] hover:from-[#9B6A3B] hover:to-[#7B5433]">
+                <button 
+                  onClick={() => resetStats(selectedCharacter.name, selectedCharacter.class, selectedCharacter.vaultid)}
+                className="px-4 py-2 bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] rounded-md border border-[#A67C52] hover:from-[#9B6A3B] hover:to-[#7B5433]">
                   {t.account.confirmReset}
                 </button>
               </div>

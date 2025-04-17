@@ -9,10 +9,21 @@ import { ServerStatus } from '@/app/_models/serverStatus';
 export default function ServerStatistics() {
   const [status, setStatus] = useState<ServerStatus>();
 
+  const username = process.env.NEXT_PUBLIC_AUTH_USER;
+  const password = process.env.NEXT_PUBLIC_AUTH_PASS;
+  const basicAuth = 'Basic ' + btoa(`${username}:${password}`);
+
   useEffect(() => {
     const checkStatus = async() => {
         try {
-          const fetchData = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/status`);
+          const fetchData = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/status`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": basicAuth
+               },
+            }
+          );
           if(fetchData.ok){
             setStatus(await fetchData.json())
           }

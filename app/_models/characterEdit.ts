@@ -1,5 +1,7 @@
 export interface CharacterEdit {
     name: string,
+    id: string,
+    vaultId: string,
     characterClassId: string,
     levelUpPoints: number,
     masterLevelUpPoints: number,

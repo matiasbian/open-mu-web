@@ -58,12 +58,16 @@ export default function CharactersPage({result}: {result: CharacterEdit[]}) {
         }
     }
 
+    const username = process.env.NEXT_PUBLIC_AUTH_USER;
+    const password = process.env.NEXT_PUBLIC_AUTH_PASS;
+    const basicAuth = 'Basic ' + btoa(`${username}:${password}`);
+
     //request pk clear of character
     async function pkClear(name: string){
         const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/characters/pkclear`,{
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             body: JSON.stringify({
                 name: name

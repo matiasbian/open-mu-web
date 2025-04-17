@@ -22,9 +22,11 @@ export default async function CharactersMenu() {
 async function getStatistics(characterId: string): Promise<CharacterEdit[]> {
     const result: CharacterEdit[] = await prisma.$queryRaw`SELECT
         c."Name" as "name",
+        c."Id" as id,
         c."CharacterClassId" as "characterClassId",
         c."LevelUpPoints" as "levelUpPoints",
         c."MasterLevelUpPoints" as "masterLevelUpPoints",
+        a."VaultId" as vaultId,
         MAX(CASE WHEN sa."DefinitionId" = '89a891a7-f9f9-4ab5-af36-12056e53a5f7' THEN sa."Value" END) AS "resets",
         MAX(CASE WHEN sa."DefinitionId" = '560931ad-0901-4342-b7f4-fd2e2fcc0563' THEN sa."Value" END) AS "lvl",
         MAX(CASE WHEN sa."DefinitionId" = '70cd8c10-391a-4c51-9aa4-a854600e3a9f' THEN sa."Value" END) AS "masterlvl",
@@ -47,7 +49,7 @@ async function getStatistics(characterId: string): Promise<CharacterEdit[]> {
         '01b0ef28-f7a0-46b5-97ba-2b624a54cd75',
         '6af2c9df-3ae4-4721-8462-9a8ec7f56fe4'
         )
-    GROUP BY c."Name", c."CharacterClassId", c."LevelUpPoints", c."MasterLevelUpPoints";`
+    GROUP BY c."Id", c."Name", c."CharacterClassId", c."LevelUpPoints", c."MasterLevelUpPoints", a."VaultId";`
     return result;
 }
 
