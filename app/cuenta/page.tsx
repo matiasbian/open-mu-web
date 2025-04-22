@@ -8,15 +8,28 @@ export default async function CharactersMenu() {
     //get the current session and collec all information, characters.... then pass it to CharactersPage
     const session = await getServerSession(authOptions)
     let final: CharacterEdit[] = [];
+    let account;
     if(session?.user.username){
         final = await getStatistics(session?.user.username)
+        account = await getAccountData(session?.user.email)
     } 
-
   return (
     <>
-        {<CharactersPage result={final}/>}
+        {<CharactersPage result={final} account={account}/>}
     </>
   )
+}
+
+async function getAccountData(email: string): Promise<any> {
+    const result = await prisma.$queryRaw`
+        SELECT 
+            d."LoginName", 
+            d."EMail" 
+        FROM 
+            data."Account" d
+        WHERE d."EMail" = ${email}
+        LIMIT 1;`
+    return result[0];
 }
 
 async function getStatistics(characterId: string): Promise<CharacterEdit[]> {

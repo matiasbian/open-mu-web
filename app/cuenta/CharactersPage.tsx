@@ -9,7 +9,7 @@ import { Shield, Sword, Skull, RotateCcw, Plus, Key, LogOut, User, Users, Award,
 import {signOut} from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { CharacterEdit } from "../_models/characterEdit";
-import { getImage } from '@/app/_utils/characterAvatarReturn';
+import { getImage, CharacterClassEnum } from '@/app/_utils/characterAvatarReturn';
 import  Image  from "next/image"
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { toast } from "react-toastify";
@@ -30,7 +30,7 @@ type Character = {
   vaultid?: string
 }
 
-function AccountContent({characters}: CharacterEdit[]) {
+function AccountContent({characters, account}: { characters: CharacterEdit[], account: any}) {
   const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState<"characters" | "settings">("characters")
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null)
@@ -40,12 +40,10 @@ function AccountContent({characters}: CharacterEdit[]) {
   const [showResetStatsModal, setShowResetStatsModal] = useState(false)
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
   const [resetMessage, setResetMessage] = useState("")
-
-  // Mock user data
+  
   const userData = {
-    username: "LouisMG",
-    email: "louismg@example.com",
-    lastLogin: "2024-05-26 14:30",
+    username: account.LoginName,
+    email: account.EMail,
   }
 
   const classIcons = {
@@ -138,9 +136,6 @@ function AccountContent({characters}: CharacterEdit[]) {
               <div>
                 <h1 className="text-2xl font-bold">{userData.username}</h1>
                 <p className="text-gray-400 text-sm">{userData.email}</p>
-                <p className="text-gray-400 text-sm">
-                  {t.account.lastLogin}: {userData.lastLogin}
-                </p>
               </div>
             </div>
             <div className="flex space-x-3">
@@ -202,7 +197,7 @@ function AccountContent({characters}: CharacterEdit[]) {
                                 <span className="ml-2 px-2 py-0.5 bg-red-900/50 text-red-400 text-xs rounded">PK</span>
                               )}
                             </div>
-                            <p className="text-gray-300">{character.characterClassId}</p>
+                            <p className="text-gray-300">{Object.values(CharacterClassEnum)[Object.keys(CharacterClassEnum).indexOf(character.characterClassId!)]}</p>
                             <div className="grid grid-cols-2 gap-x-8 gap-y-1 mt-2">
                               <div className="text-sm">
                                 <span className="text-gray-400">{t.account.level}:</span>{" "}
@@ -570,10 +565,10 @@ function AccountContent({characters}: CharacterEdit[]) {
   )
 }
 
-export default function AccountPage({result}: {result: CharacterEdit[]}) {
+export default function AccountPage({result, account}: {result: CharacterEdit[], account: any}) {
   return (
     <LanguageProvider>
-      <AccountContent characters={result} />
+      <AccountContent characters={result} account={account} />
     </LanguageProvider>
   )
 }
