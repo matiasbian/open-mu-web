@@ -12,5 +12,6 @@ export interface CharacterEdit {
     agility: number,
     vitality: number,
     energy: number,
-    leadership: number
+    leadership: number,
+    ispk: boolean
 }

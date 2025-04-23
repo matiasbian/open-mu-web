@@ -13,6 +13,7 @@ import { getImage, CharacterClassEnum } from '@/app/_utils/characterAvatarReturn
 import  Image  from "next/image"
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { toast } from "react-toastify";
+import { getSession } from "next-auth/react";
 
 // Mock data for demonstration
 type Character = {
@@ -33,13 +34,15 @@ type Character = {
 function AccountContent({characters, account}: { characters: CharacterEdit[], account: any}) {
   const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState<"characters" | "settings">("characters")
-  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null)
+  const [selectedCharacter, setSelectedCharacter] = useState<CharacterEdit | null>(null)
   const [showAddStatsModal, setShowAddStatsModal] = useState(false)
   const [showResetConfirmModal, setShowResetConfirmModal] = useState(false)
   const [showPKClearModal, setShowPKClearModal] = useState(false)
   const [showResetStatsModal, setShowResetStatsModal] = useState(false)
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
   const [resetMessage, setResetMessage] = useState("")
+  const [resetStatsMessage, setResetStatsMessage] = useState("")
+  const [pkClearErrorMessage, setPkClearErrorMessage] = useState("")
   
   const userData = {
     username: account.LoginName,
@@ -54,23 +57,22 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
     SUM: <Skull className="h-5 w-5 text-yellow-400" />,
   }
 
-  const handleAddStats = (character: Character) => {
+  const handleAddStats = (character: CharacterEdit) => {
     setSelectedCharacter(character)
     setShowAddStatsModal(true)
   }
 
-  const handleReset = (character: Character) => {
+  const handleReset = (character: CharacterEdit) => {
     setSelectedCharacter(character)
     setShowResetConfirmModal(true)
   }
 
-  const handlePKClear = (character: Character) => {
+  const handlePKClear = (character: CharacterEdit) => {
     setSelectedCharacter(character)
     setShowPKClearModal(true)
   }
 
-  const handleResetStats = (character: Character) => {
-    console.log(character)
+  const handleResetStats = (character: CharacterEdit) => {
     setSelectedCharacter(character)
     setShowResetStatsModal(true)
   }
@@ -79,6 +81,94 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
     setShowChangePasswordModal(true)
   }
 
+  const [loginName, setLoginName] = useState("")
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [repeatNewPassword, setRepeatNewPassword] = useState("");
+  const [changePasswordMessage, setChangePasswordMessage] = useState("")
+  
+  //set lognName
+  async function setName(){
+      const session = await getSession();
+      setLoginName(session?.user.username!)
+  }
+
+  //request to change password
+  async function changePassword(e: React.MouseEvent<HTMLElement>){
+    e.preventDefault()
+    await setName();
+    const result = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/account/changepassword`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: loginName,
+            oldPassword: oldPassword,
+            newPassword: newPassword,
+            repeatNewPassword: repeatNewPassword
+        })
+    })
+    const body = await result.json()
+    console.log(body, result)
+    if(result.ok){
+        toast.success(body.message)
+        setOldPassword("");
+        setNewPassword("");
+        setRepeatNewPassword("");
+        setShowChangePasswordModal(false)
+        onSignOut()
+    } else {
+      setChangePasswordMessage(body.message)
+      toast.error(body.message)
+    }
+}
+
+
+  async function resetCharacter(name: string, clasId: string, charID: string){
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/characters/reset`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: name,
+            clasId: clasId,
+            charID: charID
+        })
+    })
+    const body = await response.json();
+    if(response.ok){
+        toast.success(body.message);
+        setShowResetConfirmModal(false)
+        router.refresh();
+    } else {
+      setResetMessage(body.message)
+      toast.error(body.message);
+    }
+}
+
+//request pk clear of character
+async function pkClear(name: string){
+  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/characters/pkclear`,{
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+          name: name
+      })
+  })
+  const body = await response.json();
+  if(response.ok){
+      toast.success(body.message);
+      setShowPKClearModal(false)
+      router.refresh()
+  } else {
+    setPkClearErrorMessage(body.message)
+    toast.error(body.message);
+  }
+}
 
   //request reset stats of character
     const resetStats = async function (name: string, clasId: string, charID: string) {
@@ -98,11 +188,10 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
         const body = await response.json();
         if(response.ok){
             toast.success(body.message);
-            console.log('reset success')
             setShowResetStatsModal(false)
             router.refresh();
         } else {
-          setResetMessage(body.message)
+          setResetStatsMessage(body.message)
             toast.error(body.message);
         }
       } 
@@ -120,6 +209,65 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
       localStorage.removeItem("role");
       signOut({ callbackUrl: '/'})
     }
+
+    //send the request to add points
+        async function addStats(){
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/characters/addstats`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: selectedCharacter?.name,
+                    str: str,
+                    agi: agi,
+                    vit: vit,
+                    ene: ene,
+                    lead: lead  
+                })
+            })
+            const responseFinal = await response.json();
+
+            console.log(responseFinal)
+
+            if( response.ok ){
+                //if ok change the base values that are showed in the character card
+                setBasePoints((basePoints ?? 0) - (str+agi+vit+ene+lead))
+                setBaseStr(str + (baseStr ?? 0));
+                setBaseAgi(agi + (baseAgi ?? 0));
+                setBaseVit(vit + (baseVit ?? 0));
+                setBaseEne(ene + (baseEne ?? 0));
+                setBaseLead(lead + (baseLead ?? 0));
+                //reset all the points that were added previously
+                setStr(0);
+                setAgi(0);
+                setVit(0);
+                setEne(0);
+                setLead(0);
+                toast.success(responseFinal.message);  
+                setShowAddStatsModal(false)
+                router.refresh();
+            } else {
+                setErrorMsgStats(responseFinal.message)
+                toast.error(responseFinal.message);
+            }
+        }
+
+        const [errorMsgStats, setErrorMsgStats] = useState('')
+        const [basePoints, setBasePoints] = useState(selectedCharacter?.levelUpPoints)
+        const [baseStr, setBaseStr] = useState(selectedCharacter?.strength);
+        const [baseAgi, setBaseAgi] = useState(selectedCharacter?.agility);
+        const [baseVit, setBaseVit] = useState(selectedCharacter?.vitality);
+        const [baseEne, setBaseEne] = useState(selectedCharacter?.energy);
+        const [baseLead, setBaseLead] = useState(selectedCharacter?.leadership);
+
+        //set the points that are gonna be added
+        const [str, setStr] = useState(0);
+        const [agi, setAgi] = useState(0);
+        const [vit, setVit] = useState(0);
+        const [ene, setEne] = useState(0);
+        const [lead, setLead] = useState(0);
+              
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0a0a0e] to-[#151520] text-white">
@@ -193,7 +341,7 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                           <div>
                             <div className="flex items-center">
                               <h3 className="text-xl font-bold text-yellow-400">{character.name}</h3>
-                              {character.isPK && (
+                              {character.ispk && (
                                 <span className="ml-2 px-2 py-0.5 bg-red-900/50 text-red-400 text-xs rounded">PK</span>
                               )}
                             </div>
@@ -233,11 +381,11 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                           </button>
                           <button
                             onClick={() => handlePKClear(character)}
-                            className={`flex items-center px-3 py-2 bg-gradient-to-b from-[#2a2a3a] to-[#1a1a24] rounded border border-[#333] hover:border-yellow-400 transition-colors ${!character.isPK ? "opacity-50 cursor-not-allowed" : ""}`}
-                            disabled={!character.isPK}
+                            className={`flex items-center px-3 py-2 bg-gradient-to-b from-[#2a2a3a] to-[#1a1a24] rounded border border-[#333] hover:border-yellow-400 transition-colors ${!character.ispk ? "opacity-50 cursor-not-allowed" : ""}`}
+                            disabled={!character.ispk}
                           >
                             <Skull className="h-4 w-4 text-yellow-400 mr-2" />
-                            <span>{t.account.pkClear}</span>
+                            <span>{t.account.pkClear} </span>
                           </button>
                           <button
                             onClick={() => handleResetStats(character)}
@@ -296,6 +444,7 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                         type="password"
                         id="currentPassword"
                         className="w-full px-3 py-2 bg-[#1a1a24] border border-[#333] rounded-md text-white focus:outline-none focus:ring-1 focus:ring-yellow-500"
+                        onChange={(e) => setOldPassword(e.target.value)} value={oldPassword}
                       />
                     </div>
 
@@ -307,6 +456,7 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                         type="password"
                         id="newPassword"
                         className="w-full px-3 py-2 bg-[#1a1a24] border border-[#333] rounded-md text-white focus:outline-none focus:ring-1 focus:ring-yellow-500"
+                        onChange={(e) => setNewPassword(e.target.value)} value={newPassword}
                       />
                     </div>
 
@@ -318,11 +468,13 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                         type="password"
                         id="confirmPassword"
                         className="w-full px-3 py-2 bg-[#1a1a24] border border-[#333] rounded-md text-white focus:outline-none focus:ring-1 focus:ring-yellow-500"
+                        onChange={(e) => setRepeatNewPassword(e.target.value)} value={repeatNewPassword}
                       />
                     </div>
+              {changePasswordMessage && <p className="text-red-500 text-xs mt-1">{changePasswordMessage}</p>}
 
                     <button
-                      onClick={handleChangePassword}
+                      onClick={changePassword}
                       className="w-full bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] px-6 py-3 rounded-md text-white font-semibold uppercase border border-[#A67C52] shadow-md hover:from-[#9B6A3B] hover:to-[#7B5433]"
                     >
                       {t.account.updatePassword}
@@ -352,8 +504,9 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                     <input
                       type="number"
                       className="w-full px-3 py-2 bg-[#1a1a24] border border-[#333] rounded-l-md text-white focus:outline-none focus:ring-1 focus:ring-yellow-500"
-                      defaultValue={0}
                       min={0}
+                      value={str}
+                      onChange={(e) => setStr(+e.target.value)}
                     />
                     <button className="bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] px-4 rounded-r-md border-y border-r border-[#A67C52]">
                       <Plus className="h-4 w-4" />
@@ -367,8 +520,9 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                     <input
                       type="number"
                       className="w-full px-3 py-2 bg-[#1a1a24] border border-[#333] rounded-l-md text-white focus:outline-none focus:ring-1 focus:ring-yellow-500"
-                      defaultValue={0}
                       min={0}
+                      value={agi} 
+                      onChange={(e) => setAgi(+e.target.value)}
                     />
                     <button className="bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] px-4 rounded-r-md border-y border-r border-[#A67C52]">
                       <Plus className="h-4 w-4" />
@@ -382,8 +536,9 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                     <input
                       type="number"
                       className="w-full px-3 py-2 bg-[#1a1a24] border border-[#333] rounded-l-md text-white focus:outline-none focus:ring-1 focus:ring-yellow-500"
-                      defaultValue={0}
                       min={0}
+                      value={vit} 
+                      onChange={(e) => setVit(+e.target.value)}
                     />
                     <button className="bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] px-4 rounded-r-md border-y border-r border-[#A67C52]">
                       <Plus className="h-4 w-4" />
@@ -397,8 +552,9 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                     <input
                       type="number"
                       className="w-full px-3 py-2 bg-[#1a1a24] border border-[#333] rounded-l-md text-white focus:outline-none focus:ring-1 focus:ring-yellow-500"
-                      defaultValue={0}
                       min={0}
+                      value={ene} 
+                      onChange={(e) => setEne(+e.target.value)}
                     />
                     <button className="bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] px-4 rounded-r-md border-y border-r border-[#A67C52]">
                       <Plus className="h-4 w-4" />
@@ -409,23 +565,33 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                 <div className="pt-4 border-t border-[#333]">
                   <div className="flex justify-between text-sm mb-2">
                     <span>{t.account.availablePoints}:</span>
-                    <span className="text-yellow-400">1000</span>
+                    <span className="text-yellow-400">{selectedCharacter.levelUpPoints}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>{t.account.pointsToAdd}:</span>
-                    <span className="text-yellow-400">0</span>
+                    <span className="text-yellow-400">{ene + vit + agi + str}</span>
                   </div>
                 </div>
               </div>
 
+              {errorMsgStats && <p className="text-red-500 text-xs mt-1">{errorMsgStats}</p>}
               <div className="flex justify-end space-x-3 mt-6">
                 <button
-                  onClick={() => setShowAddStatsModal(false)}
+                  onClick={() => {
+                    setErrorMsgStats('')
+                    setShowAddStatsModal(false)
+                    setStr(0)
+                    setAgi(0)
+                    setVit(0)
+                    setEne(0)
+                  }}
                   className="px-4 py-2 bg-[#1a1a24] border border-[#333] rounded-md hover:bg-[#252535]"
                 >
                   {t.account.cancel}
                 </button>
-                <button className="px-4 py-2 bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] rounded-md border border-[#A67C52] hover:from-[#9B6A3B] hover:to-[#7B5433]">
+                <button className="px-4 py-2 bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] rounded-md border border-[#A67C52] hover:from-[#9B6A3B] hover:to-[#7B5433]"
+                  onClick={addStats}
+                >
                   {t.account.saveChanges}
                 </button>
               </div>
@@ -465,7 +631,7 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                   {t.account.cancel}
                 </button>
                 <button 
-                  onClick={() => resetStats(selectedCharacter.name, selectedCharacter.class, selectedCharacter.vaultid)}
+                  onClick={() => resetCharacter(selectedCharacter.name, selectedCharacter.class, selectedCharacter.vaultid)}
                 className="px-4 py-2 bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] rounded-md border border-[#A67C52] hover:from-[#9B6A3B] hover:to-[#7B5433]">
                   {t.account.confirmReset}
                 </button>
@@ -490,6 +656,8 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                 <p className="text-yellow-400 font-semibold">5,000,000 Zen</p>
               </div>
 
+              {resetStatsMessage && <p className="text-red-500 text-xs mt-1">{resetStatsMessage}</p>}
+              
               <div className="flex justify-end space-x-3">
                 <button
                   onClick={() => setShowPKClearModal(false)}
@@ -497,7 +665,9 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                 >
                   {t.account.cancel}
                 </button>
-                <button className="px-4 py-2 bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] rounded-md border border-[#A67C52] hover:from-[#9B6A3B] hover:to-[#7B5433]">
+                <button className="px-4 py-2 bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] rounded-md border border-[#A67C52] hover:from-[#9B6A3B] hover:to-[#7B5433]"
+                onClick={() => pkClear(selectedCharacter.name)}
+                >
                   {t.account.confirmPKClear}
                 </button>
               </div>
@@ -521,6 +691,7 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                 <p className="text-yellow-400 font-semibold">10,000,000 Zen</p>
               </div>
 
+              {resetStatsMessage && <p className="text-red-500 text-xs mt-1">{resetStatsMessage}</p>}
               <div className="flex justify-end space-x-3">
                 <button
                   onClick={() => setShowResetStatsModal(false)}
@@ -528,7 +699,9 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
                 >
                   {t.account.cancel}
                 </button>
-                <button className="px-4 py-2 bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] rounded-md border border-[#A67C52] hover:from-[#9B6A3B] hover:to-[#7B5433]">
+                <button className="px-4 py-2 bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] rounded-md border border-[#A67C52] hover:from-[#9B6A3B] hover:to-[#7B5433]"
+                 onClick={() => resetStats(selectedCharacter.name, selectedCharacter.class, selectedCharacter.vaultid)}
+                >
                   {t.account.confirmResetStats}
                 </button>
               </div>
@@ -546,7 +719,7 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
             </div>
             <div className="p-6">
               <p className="mb-6">{t.account.passwordChangeSuccess}</p>
-
+        
               <div className="flex justify-center">
                 <button
                   onClick={() => setShowChangePasswordModal(false)}

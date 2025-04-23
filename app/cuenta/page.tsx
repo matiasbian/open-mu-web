@@ -39,6 +39,7 @@ async function getStatistics(characterId: string): Promise<CharacterEdit[]> {
         c."CharacterClassId" as "characterClassId",
         c."LevelUpPoints" as "levelUpPoints",
         c."MasterLevelUpPoints" as "masterLevelUpPoints",
+        (c."State" != 0) as isPK,
         a."VaultId" as vaultId,
         MAX(CASE WHEN sa."DefinitionId" = '89a891a7-f9f9-4ab5-af36-12056e53a5f7' THEN sa."Value" END) AS "resets",
         MAX(CASE WHEN sa."DefinitionId" = '560931ad-0901-4342-b7f4-fd2e2fcc0563' THEN sa."Value" END) AS "lvl",
