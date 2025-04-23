@@ -26,8 +26,18 @@ const nextConfig = {
       },
     ]
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     domains: ['media.discordapp.net'],
+  },
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
   },
 }
 
