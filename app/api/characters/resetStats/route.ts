@@ -1,6 +1,7 @@
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { StatAttribute } from "@prisma/client";
+import { equal } from "assert";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
@@ -10,10 +11,12 @@ export async function POST(req: Request) {
             return NextResponse.json({message: "Function disabled"}, {status: 400})
         }
 
+        console.log('step 0')
 
-        const { name, clasId } = await req.json() as { name: string, clasId: string };
+        const { name, clasId, charID } = await req.json() as { name: string, clasId: string, charID: string };
 
         const zenToReset = +process.env.NEXT_PUBLIC_ZEN_TO_RESET_STATS!;
+        console.log('step 1 ' + charID)
 
         //CHECK SESSION
         const session = await getServerSession(authOptions);
@@ -29,6 +32,7 @@ export async function POST(req: Request) {
         } else {
             return NextResponse.json({message: "You can't do this!"}, {status: 400});
         }
+        console.log('step 2')
 
         //check if character is on
         const result = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/status`);
@@ -40,6 +44,7 @@ export async function POST(req: Request) {
         } else {
           return NextResponse.json({message: "Couldn't reach the server, try again later"},{status: 500});
         }
+        console.log('step 3')
 
         const attributeStatsId = ['123282fe-fead-448e-ad2c-baece939b4b1', '1ae9c014-e3cd-4703-bd05-1b65f5f94ceb', '6ca5c3a6-b109-45a5-87a7-fdcb107b4982', '01b0ef28-f7a0-46b5-97ba-2b624a54cd75', '6af2c9df-3ae4-4721-8462-9a8ec7f56fe4'];
         //find all the stat attribute of a character
@@ -60,13 +65,16 @@ export async function POST(req: Request) {
 
             }
         });
-
+        console.log('step 4')
+       
         const totalResetedPoints = statsAttributes.reduce((acc, cur) => acc + (cur.Value - 20), 0);
+        console.log('step 5')
+        const test = await prisma.itemStorage.findMany({})
 
         const enoughMoney = await prisma.itemStorage.findFirst({
             where: {
-                Character: {
-                    Name: name
+                Id: {
+                    equals: charID
                 },
                 Money: {
                     gte: zenToReset
@@ -76,6 +84,7 @@ export async function POST(req: Request) {
         if(!enoughMoney){
             return NextResponse.json({message: "You don't have enough zen: " + zenToReset}, {status: 400});
         }
+        console.log('step 6')
 
         await prisma.$transaction([
             //change the value for every statAttribute found
@@ -121,8 +130,11 @@ export async function POST(req: Request) {
                 }
             })
         ])
+        console.log('step final')
+
     return NextResponse.json({message: "Points were reseted succesffuly"}, {status: 200});
-    } catch {
+    } catch (e) {
+        console.log(e)
         return NextResponse.json({message: "There was a problem while reseting the points"}, {status: 400});
     }
 }

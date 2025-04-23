@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 import Banners from "./Banners"
 import LoginForm from "./LoginForm"
-import { authOptions } from "@/lib/auth"
 import UserPanel from "./UserPanel";
 
 export default async function Section1() {

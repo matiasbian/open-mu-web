@@ -4,6 +4,8 @@ import React from 'react'
 import NewsCard from './(components)/NewsCard';
 import NewsComplete from '@/app/_models/NewsComplete';
 import ChangePageButton from './(components)/ChangePageButton';
+import NewsItem from "./news-item"
+
 
 export default async function News({page} : {page: number}) {
   page = page >= 0 ? page : 0;
@@ -38,16 +40,24 @@ export default async function News({page} : {page: number}) {
   `;
 
   return (
-    <div className='px-20 w-full'>
-      <h1 className='text-2xl text-primary font-semibold mb-4'>NEWS</h1>
-      <hr className='h-[2px] bg-primary/[0.4] mb-6'/>
-        {news.map((n, i) => (
-          <NewsCard news={n} key={i} shortVersion={true}/>
+    <div className="bg-[#0c0c14]/80 border border-[#333] rounded">
+      <div className="border-b border-[#333] p-4">
+        <h2 className="text-xl uppercase font-semibold tracking-wider">{"Noticias"}</h2>
+      </div>
+      <div className="p-4 space-y-4">
+
+      {news.map((n, i) => (
+          <NewsItem
+          author={n.author}
+          date={n.creationDate.toDateString()}
+          category="important"
+          categoryLabel="important"
+          content={n.body}
+          key={i}
+        />
         ))}
-        <div className='flex'>
-          {(page > 0) && <ChangePageButton forward={false}/>}
-          {((!page || page >= 0) && news.length > 3) &&<ChangePageButton forward={true}/>}
-        </div>
+        
+      </div>
     </div>
   )
 }
