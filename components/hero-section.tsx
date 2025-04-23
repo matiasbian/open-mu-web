@@ -6,6 +6,15 @@ import { useLanguage } from "@/contexts/language-context"
 
 export default function HeroSection() {
   const { t } = useLanguage()
+  function daysSinceDate(date:Date) {
+    const startDate = new Date(date);
+    const today = new Date();
+  
+    const timeDifference = today.getTime() - startDate.getTime();
+    const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+  
+    return daysDifference;
+  }
 
   return (
     <section className="relative pt-8 pb-16">
@@ -25,8 +34,8 @@ export default function HeroSection() {
         </div>
         <div className="w-full lg:w-1/2 flex flex-col justify-center items-end">
           <div className="text-right mb-4">
-            <p className="text-white text-lg">{t.hero.accounts}</p>
-            <p className="text-yellow-400 text-5xl font-bold">1997</p>
+            <p className="text-white text-lg">{t.server.timeonline}</p>
+            <p className="text-yellow-400 text-5xl font-bold">{daysSinceDate(new Date('2025-03-21'))}</p>
           </div>
           <Link
             href="/downloads"

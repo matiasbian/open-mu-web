@@ -14,22 +14,22 @@ export default function ServerInfo() {
         <div className="p-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="text-gray-300">{t.server.version}</div>
-            <div className="text-yellow-400">1046 + Season VI</div>
+            <div className="text-yellow-400">Season VI</div>
 
             <div className="text-gray-300">{t.server.experience}</div>
-            <div className="text-yellow-400">200 ~ 500x</div>
+            <div className="text-yellow-400">20x</div>
 
             <div className="text-gray-300">{t.server.drop}</div>
             <div className="text-yellow-400">30% ~ 50%</div>
 
-            <div className="text-gray-300">{t.server.accounts}</div>
-            <div className="text-yellow-400">2723</div>
+            <div className="text-gray-300">{t.server.zendrop}</div>
+            <div className="text-yellow-400">50%</div>
 
-            <div className="text-gray-300">{t.server.characters}</div>
-            <div className="text-yellow-400">3429</div>
+            <div className="text-gray-300">{t.server.maxlevel}</div>
+            <div className="text-yellow-400">400</div>
 
-            <div className="text-gray-300">{t.server.guilds}</div>
-            <div className="text-yellow-400">729</div>
+            <div className="text-gray-300">{t.server.pointsperreset}</div>
+            <div className="text-yellow-400">1000</div>
           </div>
 
           <div className="flex justify-center mt-4 space-x-2">

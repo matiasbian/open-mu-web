@@ -44,6 +44,10 @@ type TranslationStrings = {
     accounts: string
     characters: string
     guilds: string
+    timeonline: string
+    maxlevel: string
+    zendrop: string
+    pointsperreset: string
   }
   castle: {
     title: string
@@ -600,6 +604,10 @@ const translations: Translations = {
       accounts: "Cuentas",
       characters: "Personajes",
       guilds: "Gremios",
+      timeonline: "Días online",
+      maxlevel: "Nivel Máximo",
+      zendrop: "Drop de zen",
+      pointsperreset: "Puntos por reset"
     },
     castle: {
       title: "Castle Siege",
@@ -1154,6 +1162,10 @@ const translations: Translations = {
       accounts: "Accounts",
       characters: "Characters",
       guilds: "Guilds",
+      timeonline: "Days operating",
+      maxlevel: "Max level",
+      zendrop: "Zen drop",
+      pointsperreset: "Points per reset"
     },
     castle: {
       title: "Castle Siege",
