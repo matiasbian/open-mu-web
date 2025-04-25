@@ -5,7 +5,7 @@ import { useLanguage } from "@/contexts/language-context"
 import Image from "next/image"
 import { getImage } from "@/app/_utils/characterAvatarReturn";
 
-type RankingType = "players" | "resets" | "events"
+type RankingType = "players" | "resets" | "pvp" | "events"
 
 type RankingItem = {
   position: number

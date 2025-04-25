@@ -20,17 +20,14 @@ export async function GET() {
           if(result.ok){
               const data: [] = await result.json();
               tempMyObj.Leader = data.find(e => e.guildStatus === 2).Name
-              console.log(data)
           }
           else
           {
-            console.log('final countdown')
           }
   
         }
         catch (e)
         {
-          console.log('errores', e)
         }
         
         return tempMyObj

@@ -75,7 +75,6 @@ function SupportContent() {
 
     if (validate()) {
       // Here you would typically send the data to your API
-      console.log("Form submitted:", formData)
       setIsSubmitted(true)
 
       // Reset form after submission

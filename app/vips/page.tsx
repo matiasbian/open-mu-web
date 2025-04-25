@@ -10,7 +10,7 @@ import Link from "next/link"
 function VipsContent() {
   const { t } = useLanguage()
 
-  const vipPlans = [
+  /*const vipPlans = [
     {
       name: t.vips.bronze.name,
       price: "$10",
@@ -52,7 +52,7 @@ function VipsContent() {
         t.vips.gold.feature6,
       ],
     },
-  ]
+  ]*/
 
   const benefits = [
     {
@@ -121,7 +121,7 @@ function VipsContent() {
         </div>
 
         {/* VIP Plans */}
-        <h2 className="text-2xl font-bold text-center mb-8">{t.vips.choosePlan}</h2>
+        {/* <h2 className="text-2xl font-bold text-center mb-8">{t.vips.choosePlan}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {vipPlans.map((plan, index) => (
             <div
@@ -157,7 +157,7 @@ function VipsContent() {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
 
         {/* Payment Methods */}
         <div className="bg-[#0c0c14]/80 border border-[#333] rounded-lg overflow-hidden mb-12">

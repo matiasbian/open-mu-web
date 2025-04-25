@@ -5,7 +5,7 @@ import { useLanguage } from "@/contexts/language-context"
 import Image from "next/image"
 import { getImage } from "@/app/_utils/characterAvatarReturn";
 
-type RankingType = "players" | "resets" | "events"
+type RankingType = "players" | "resets" | "pvp" | "events"
 
 type RankingItem = {
   position: number
@@ -28,6 +28,7 @@ export default function RankingTable({ type, items }: RankingTableProps) {
     players: t.rankings.players,
     resets: t.rankings.resets,
     events: t.rankings.events,
+    pvp: t.rankingsPage.topPvP
   }
 
   const rankingLabels = {
@@ -47,8 +48,10 @@ export default function RankingTable({ type, items }: RankingTableProps) {
               <th className="py-2 text-left">#</th>
               <th className="py-2 text-left">{t.rankings.name}</th>
               <th className="py-2 text-left">{t.rankings.class || t.rankingsPage.guildName}</th>
-              <th className="py-2 text-left">{t.rankingsPage.level}</th>
-              <th className="py-2 text-left">{type === "resets" ? "MR" : t.rankings.reset}</th>
+              <th className="py-2 text-left">{type !== 'pvp' ? t.rankingsPage.level : t.rankingsPage.killCount}</th>
+              {type !== 'pvp' &&
+                <th className="py-2 text-left">{type === "resets" ? "MR" : t.rankings.reset}</th>
+              }
             </tr>
           </thead>
           <tbody className="divide-y divide-[#333]">
@@ -57,8 +60,17 @@ export default function RankingTable({ type, items }: RankingTableProps) {
                 <td className={`py-3 ${item.highlight ? "text-yellow-400" : ""}`}>{i+1}</td>
                 <td className={`py-3 ${item.highlight ? "text-yellow-400" : ""}`}>{item.Name}</td>
                 <td className={`py-3 ${item.highlight ? "text-yellow-400" : ""}`}><Image className="inline-block mr-2 rounded-lg shadow-lg shadow-black" src={(getImage(item.CharacterClassId) as StaticImport)} width={35} alt="character_avatar"/></td>
+                
+                {type !== 'pvp' &&
                 <td className="py-3 text-yellow-400">{item.lvl}</td>
-                <td className="py-3 text-orange-400">{item.resets}</td>
+                }
+                {type !== 'pvp' &&
+                  <td className="py-3 text-orange-400">{item.resets}</td>
+                }
+
+                {type === 'pvp' &&
+                <td className="py-3 text-yellow-400">{item.PlayerKillCount}</td>
+                }
               </tr>
             ))}
           </tbody>

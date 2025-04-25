@@ -9,7 +9,7 @@ import { DollarSign, CreditCard, Gift, Crown, Gem, Heart, ShoppingCart, CheckCir
 
 function DonationContent() {
   const { t } = useLanguage()
-  const [selectedCategory, setSelectedCategory] = useState<"vip" | "coins" | "donation">("vip")
+  const [selectedCategory, setSelectedCategory] = useState<"donation">("donation")
   const [showThankYou, setShowThankYou] = useState(false)
 
   const vipPackages = [
@@ -129,51 +129,7 @@ function DonationContent() {
           <p className="text-gray-400 max-w-2xl mx-auto">{t.donation.subtitle}</p>
         </div>
 
-        {/* Category Tabs */}
-        <div className="flex justify-center mb-12">
-          <div className="inline-flex bg-[#1a1a24] rounded-lg p-1">
-            <button
-              onClick={() => setSelectedCategory("vip")}
-              className={`px-4 py-2 rounded-md ${
-                selectedCategory === "vip"
-                  ? "bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] text-white"
-                  : "text-gray-400 hover:text-white"
-              }`}
-            >
-              <div className="flex items-center">
-                <Crown className="h-4 w-4 mr-2" />
-                <span>{t.donation.categories.vip}</span>
-              </div>
-            </button>
-            <button
-              onClick={() => setSelectedCategory("coins")}
-              className={`px-4 py-2 rounded-md ${
-                selectedCategory === "coins"
-                  ? "bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] text-white"
-                  : "text-gray-400 hover:text-white"
-              }`}
-            >
-              <div className="flex items-center">
-                <Gem className="h-4 w-4 mr-2" />
-                <span>{t.donation.categories.coins}</span>
-              </div>
-            </button>
-            <button
-              onClick={() => setSelectedCategory("donation")}
-              className={`px-4 py-2 rounded-md ${
-                selectedCategory === "donation"
-                  ? "bg-gradient-to-b from-[#8B5A2B] to-[#6B4423] text-white"
-                  : "text-gray-400 hover:text-white"
-              }`}
-            >
-              <div className="flex items-center">
-                <Heart className="h-4 w-4 mr-2" />
-                <span>{t.donation.categories.donation}</span>
-              </div>
-            </button>
-          </div>
-        </div>
-
+        
         {/* Thank You Message */}
         {showThankYou && (
           <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/70">
