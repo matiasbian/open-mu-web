@@ -813,20 +813,20 @@ const translations: Translations = {
       paymentMethods: "Métodos de Pago",
       benefits: {
         exp: {
-          title: "Experiencia",
-          description: "Aumenta la experiencia obtenida en el juego.",
+          title: "Experiencia X2",
+          description: "Duplica la experiencia obtenida en el juego.",
         },
         drop: {
-          title: "Drop",
-          description: "Aumenta la probabilidad de obtener items.",
+          title: "Drop al 60%",
+          description: "Aumenta la probabilidad de obtener items excellent.",
         },
         items: {
-          title: "Items",
-          description: "Obtén items exclusivos.",
+          title: "NPC Items mejorados",
+          description: "Obtén items exclusivos en los NPC del juego.",
         },
         events: {
           title: "Eventos",
-          description: "Participa en eventos exclusivos.",
+          description: "Participa en eventos exclusivos solo para jugadores VIP.",
         },
       },
       bronze: {

@@ -110,7 +110,6 @@ function AccountContent({characters, account}: { characters: CharacterEdit[], ac
         })
     })
     const body = await result.json()
-    console.log(body, result)
     if(result.ok){
         toast.success(body.message)
         setOldPassword("");
@@ -197,7 +196,6 @@ async function pkClear(name: string){
       } 
       catch(e)
       {
-        console.log('aaaa', e)
       }   
       
       setShowResetStatsModal(false)
@@ -227,8 +225,6 @@ async function pkClear(name: string){
                 })
             })
             const responseFinal = await response.json();
-
-            console.log(responseFinal)
 
             if( response.ok ){
                 //if ok change the base values that are showed in the character card

@@ -49,7 +49,7 @@ export default async function News({page} : {page: number}) {
       {news.map((n, i) => (
           <NewsItem
           author={n.author}
-          date={n.creationDate.toDateString()}
+          date={n.creationDate.toLocaleDateString()}
           category="important"
           categoryLabel="important"
           content={n.body}

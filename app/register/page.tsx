@@ -101,7 +101,6 @@ function RegisterForm() {
         }
         catch(error)
         {
-            console.log('error al pushera', error)
         }
     }
   }

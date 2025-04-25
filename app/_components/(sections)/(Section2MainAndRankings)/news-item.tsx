@@ -24,7 +24,7 @@ export default function NewsItem({ author, date, category, categoryLabel, conten
           <Shield className="h-8 w-8 text-yellow-400" />
         </div>
       </div>
-      <div>
+      <div style={{ width: '100%'}}>
         <div className="flex justify-between mb-1">
           <h3 className="text-yellow-400 font-semibold">{author}</h3>
           <span className="text-gray-400 text-sm">{date}</span>

@@ -36,8 +36,6 @@ export async function POST(req: Request){
       return NextResponse.json({message: "Couldn't reach the server, try again later"},{status: 500});
     }
 
-    console.log('step 1')
-
     //select the right map and coordinates x,y to reset the character to
     const elfAray = ["00000040-000b-0000-0000-000000000000", "00000040-000a-0000-0000-000000000000", "00000040-0008-0000-0000-000000000000"];
     const sumArray = ["00000040-0017-0000-0000-000000000000", "00000040-0016-0000-0000-000000000000", "00000040-0014-0000-0000-000000000000"];
@@ -51,9 +49,6 @@ export async function POST(req: Request){
     const lvlToReset = +process.env.LVL_TO_RESET!
     const zen = +process.env.NEXT_PUBLIC_ZEN_TO_RESET!
     const maxReset = +process.env.MAX_RESET!
-
-    
-    console.log('step 2')
 
     //check if character HAS THE RIGHT LVL TO RESET greater or equals to and if has reached max reset
     const charToReset = await prisma.statAttribute.count({
@@ -81,8 +76,6 @@ export async function POST(req: Request){
         }
       });
 
-    console.log('step 3', charToReset)
-
     //if 2 then it means that the character was found 2 times and it means that it has the lvl to rr
     //and 
     if(charToReset === 2) {
@@ -98,13 +91,9 @@ export async function POST(req: Request){
             }
         });
 
-    console.log('step 4')
-
         if(!enoughMoney) {
             return NextResponse.json({message: "You don't have enough zen: " + zen}, {status: 400})
         }
-
-    console.log('step 5')
 
         //do the transaction subtract the zen + reset the character
         await prisma.$transaction([
@@ -146,9 +135,6 @@ export async function POST(req: Request){
               }
             })
         ])
-
-    console.log('step SUCCESS')
-
     } else {
         return NextResponse.json({message: "You aren't lvl " + lvlToReset + " or you are at maximum reset " + maxReset}, {status: 400});
     }
