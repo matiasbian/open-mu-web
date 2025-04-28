@@ -9,7 +9,7 @@ import NewsItem from "./news-item"
 
 export default async function News({page} : {page: number}) {
   page = page >= 0 ? page : 0;
-  const NEWS_PER_PAGE = 4;
+  const NEWS_PER_PAGE = 3;
   const SKIP = (page * NEWS_PER_PAGE) || 0; 
 
   // Primero verificamos si la tabla existe
@@ -36,8 +36,8 @@ export default async function News({page} : {page: number}) {
     SELECT * FROM "public"."openMuWeb_News"
     ORDER BY "creationDate" DESC
     LIMIT ${NEWS_PER_PAGE}
-    OFFSET ${SKIP}
   `;
+
 
   return (
     <div className="bg-[#0c0c14]/80 border border-[#333] rounded">
@@ -50,8 +50,9 @@ export default async function News({page} : {page: number}) {
           <NewsItem
           author={n.author}
           date={n.creationDate.toLocaleDateString()}
-          category="important"
-          categoryLabel="important"
+          category={n.tag}
+          categoryLabel={n.tag}
+          title={n.title}
           content={n.body}
           key={i}
         />
