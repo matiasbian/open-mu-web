@@ -8,9 +8,10 @@ type NewsItemProps = {
   category: "important" | "maintenance" | "event"
   categoryLabel: string
   content: string
+  title: string
 }
 
-export default function NewsItem({ author, date, category, categoryLabel, content }: NewsItemProps) {
+export default function NewsItem({ author, date, category, categoryLabel, content, title }: NewsItemProps) {
   const categoryColors = {
     important: "bg-red-600",
     maintenance: "bg-green-600",
@@ -32,6 +33,7 @@ export default function NewsItem({ author, date, category, categoryLabel, conten
         <div className={`inline-block ${categoryColors[category]} text-white text-xs px-2 py-0.5 rounded mb-2`}>
           {categoryLabel}
         </div>
+        <h2>{title}</h2>
         <p className="text-gray-300 text-sm">{content}</p>
       </div>
     </div>

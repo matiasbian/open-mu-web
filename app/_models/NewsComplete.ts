@@ -4,4 +4,5 @@ export default interface NewsComplete {
     body: string;
     author: string;
     creationDate: Date;
+    tag: "important" | "maintenance" | "event";
 }
